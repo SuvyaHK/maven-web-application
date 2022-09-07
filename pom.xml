@@ -98,13 +98,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Releases Nexus Repository</name>
-	      <url>http://15.207.106.24:9980/suvya/repository/walmart-releaserepo/</url>
+	      <url>http://172.31.33.154:9980/suvya/repository/walmart-releaserepo/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Snapshot Nexus Repository </name>
-	      <url>http://15.207.106.24:9980/suvya/repository/walmart-snapshotrepo/</url>
+	      <url>http://172.31.33.154:9980/suvya/repository/walmart-snapshotrepo/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
