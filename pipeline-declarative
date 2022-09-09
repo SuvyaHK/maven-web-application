@@ -1,0 +1,42 @@
+pipeline{
+agent any
+options {
+  buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')
+  timestamps
+}
+triggers {
+  pollSCM ('* * * * *')
+}
+tools{
+maven 'maven3.8.6'
+}
+stages{
+stage('CheckOutCode'){
+steps{
+git credentialsId: '96f4ca50-a16c-4cd2-949c-d3bd51c75ac0', url: 'https://github.com/SuvyaHK/maven-web-application.git'
+}
+}
+stage('Build'){
+steps{
+sh "mvn clean package"
+}
+}
+stage('ExecuteSonarQubeReport'){
+steps{
+sh "mvn clean sonar:sonar"
+}
+}
+stage('uploadArtifactsIntoArtifactoryRepo'){
+steps{
+sh "mvn clean deploy"
+}
+}
+stage('DeployApplicationIntoTomcatServer'){
+steps{
+sshagent(['03a3e01e-2431-4e53-99f4-41f8c7088c68']) {
+sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@172.31.1.19:/opt/apache-tomcat-9.0.65/webapps/"
+}
+}
+}
+}
+}
