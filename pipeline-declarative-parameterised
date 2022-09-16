@@ -4,15 +4,23 @@ options {
   buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')
   timestamps()
 }
+/*
 triggers {
   pollSCM ('* * * * *')
 }
+*/
 tools{
 maven 'maven3.8.6'
 }
+parameters {
+ string(name: 'GoalName', defaultValue: 'Mithun Technologies', description: 'Give the name parameter value')
+ choice(name: 'BranchName', choices: ['master', 'development', 'stage'], description: 
+'select the branchname')
+ 
 stages{
 stage('CheckOutCode'){
 steps{
+git branch: "${params.BranchName}"
 slackNotifications('STARTED')
 git credentialsId: '96f4ca50-a16c-4cd2-949c-d3bd51c75ac0', url: 'https://github.com/SuvyaHK/maven-web-application.git'
 }
