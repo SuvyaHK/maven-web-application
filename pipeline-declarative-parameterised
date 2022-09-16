@@ -23,8 +23,14 @@ sh "mvn clean package"
 }
 }
 } //stages closing
-
-
+post {
+  success {
+    slackNotifications('currentBuild.result')
+  }
+  failure {
+    slackNotifications('currentBuild.result')
+  }
+}
 } //pipeline closing
 
 
