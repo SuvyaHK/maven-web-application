@@ -1,1 +1,28 @@
-ggg
+pipeline{
+agent any
+options {
+  buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')
+  timestamps()
+}
+triggers {
+  pollSCM ('* * * * *')
+}
+tools{
+maven 'maven3.8.6'
+}
+stages{
+stage('CheckOutCode'){
+steps{
+slackNotifications('STARTED')
+git credentialsId: '96f4ca50-a16c-4cd2-949c-d3bd51c75ac0', url: 'https://github.com/SuvyaHK/maven-web-application.git'
+}
+}
+stage('Build'){
+steps{
+sh "mvn clean package"
+}
+}
+} //stages closing
+
+
+} //pipeline closing
